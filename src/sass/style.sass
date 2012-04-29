@@ -1,0 +1,136 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset"
+@import "compass/utilities/general"
+
+@font-face
+    font:
+        family: 'Ubuntu Mono'
+        style: normal
+        weight: normal
+    src: local('Ubuntu Mono'), url('fonts/UbuntuMono.woff') format('woff')
+@font-face
+    font:
+        family: 'Hammersmith One'
+        style: normal
+        weight: normal
+    src: local('Hammersmith One'), url('fonts/HammersmithOne.woff') format('woff')
+
+@function grey($v)
+    @return rgb($v, $v, $v)
+    
+    
+@mixin nose
+    user-select: none
+    -webkit-user-select: none
+    -moz-user-select: none
+    -o-user-select: none
+    -ms-user-select: none
+    
+@mixin ditch
+    +box-shadow(white 0 1px 0, rgba(0, 0, 0, 0.5) 0 1px 3px 0 inset)    
+    +text-shadow(0 1px 1px white)
+    
+$side: 200px
+$body: 800px
+$fn: 200px
+
+html    
+    height: 100%
+    
+    
+    
+body
+    font-family: Helvetica, Verdana, 'LiHei Pro', '微軟正黑體', Arial, sans-serif
+    height: 100%
+    background: gold
+    color: white
+    
+#template
+    display: none
+    
+h2
+    color: white
+    font:
+        family: 'Ubuntu Mono'
+        size: 200%
+    
+#container
+    +clearfix
+    width: 1000px
+    height: 100%
+    margin: 0 auto
+
+    
+header
+    width: $side
+    height: 100px
+    
+    // banana logo
+    background:
+        image: url('../images/real-banana.png')
+        position: center
+        size: auto 50px 
+        repeat: no-repeat
+        
+    cursor: pointer
+    
+    h1
+        display: none
+        color: white
+        text-align: center
+        line-height: 100px
+
+#aside
+    float: left
+    width: $side
+    height: 100%
+    background: grey(60)
+
+#main
+    float: left
+    width: $body
+    height: 100%
+    background: grey(50)
+    
+    article
+        padding: 60px
+   
+//
+//  Project-list
+// 
+    
+
+#project-list
+    +nose
+    li
+        +clearfix
+        width: $side - 60px
+        height: 40px
+        padding: 0 30px        
+        line-height: 40px
+        
+        color: white
+        font:
+            family: 'Ubuntu Mono' 
+            size: 150%
+        text-align: center
+            
+        cursor: pointer
+        
+        &:hover
+            background: grey(80)
+        &.selected
+            background: grey(50) 
+            
+//
+//  Function-list
+// 
+#function-list
+    width: $fn
+    height: 100%
+    background: grey(50)
+    
