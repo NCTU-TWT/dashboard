@@ -10,7 +10,7 @@ baker.open 'gedit', ['src', 'client/index.html']
 
 baker.watch '.sass', ['src'], (source) -> "compass compile"
 
-baker.watch '.coffee', ['src'], (source) -> "coffee -o client/lib/scripts #{ source }"
+baker.watch '.coffee', ['src'], (source) -> "coffee -o client/scripts #{ source }"
 
 option '-l', '--list', 'list all target liles'
 

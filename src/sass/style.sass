@@ -46,91 +46,71 @@ html
 body
     font-family: Helvetica, Verdana, 'LiHei Pro', '微軟正黑體', Arial, sans-serif
     height: 100%
-    background: gold
-    color: white
-    
-#template
-    display: none
-    
-h2
+    background: grey(60)
     color: white
     font:
         family: 'Ubuntu Mono'
-        size: 200%
     
+    
+h2
+    color: white
+    height: 40px
+    line-height: 40px
+    font:
+        size: 200%
+
+    
+
 #container
-    +clearfix
-    width: 1000px
+    width: 800px
     height: 100%
     margin: 0 auto
+    
+section
+    padding: 40px
 
-    
-header
-    width: $side
-    height: 100px
-    
-    // banana logo
-    background:
-        image: url('../images/real-banana.png')
-        position: center
-        size: auto 50px 
-        repeat: no-repeat
-        
-    cursor: pointer
-    
-    h1
-        display: none
-        color: white
-        text-align: center
-        line-height: 100px
-
-#aside
-    float: left
-    width: $side
-    height: 100%
-    background: grey(60)
-
-#main
-    float: left
-    width: $body
-    height: 100%
-    background: grey(50)
-    
-    article
-        padding: 60px
-   
 //
-//  Project-list
-// 
-    
+//  Stream
+//
 
-#project-list
-    +nose
+#stream
+    padding: 20px
     li
         +clearfix
-        width: $side - 60px
         height: 40px
-        padding: 0 30px        
         line-height: 40px
         
+.stream-name
+    float: left
+    width: 200px
+    
+.stream-panel
+    float: left
+    width: 480px
+    
+    button
+        height: 30px
+        line-height: 30px
+        margin: 5px 10px
+        padding: 0 10px
+        
+        border: none
+        border-radius: 4px
+        
+        background: grey(50)
         color: white
-        font:
-            family: 'Ubuntu Mono' 
-            size: 150%
-        text-align: center
-            
+        
         cursor: pointer
         
+        i
+            height: 30px
+            line-height: 30px
+            padding-right: 5px
+        
         &:hover
-            background: grey(80)
+            background: grey(40)
+        &:active
+            background: grey(30)
         &.selected
-            background: grey(50) 
-            
-//
-//  Function-list
-// 
-#function-list
-    width: $fn
-    height: 100%
-    background: grey(50)
+            background: rgb(60, 120, 180)
     
