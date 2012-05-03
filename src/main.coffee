@@ -17,6 +17,53 @@ require [
 
     socket = io.connect();
     
+    class Server extends Backbone.Model
+        default:
+            name: 'anonymous'
+            status: false
+    
+    class ServerCollection extends Backbone.Collection
+        model: Server
+        
+    class ServerView extends Backbone.View
+        
+        tagName :   'li'
+        template:   hogan.compile $('#server-template').html()
+    
+        events:
+            'click .switch': 'switch'
+            'click .restart': 'restart'
+    
+    
+        initialize: ->
+            @render()
+            
+        render: ->
+            @$el.html @template.render
+                name: @model.get 'name'
+                status: @model.get 'status'
+            $('#server').append @$el
+            
+        switch: ->
+            status = @model.get 'status'   
+            name = @model.get 'name'
+            
+            @model.set 'status', !status
+            
+            @$el.html @template.render
+                name: @model.get 'name'
+                status: @model.get 'status'
+                
+            console.log "#{name} switched"
+                        
+            
+        restart: ->
+            name = @model.get 'name'
+            socket.emit('restart');
+            console.log "#{name} restart"
+            
+            
+            
     
     class Stream extends Backbone.Model
         default:
@@ -67,8 +114,9 @@ require [
     
     $ ->
         streamCollection = new StreamCollection
+        serverCollection = new ServerCollection
     
-        socket.on 'init', (streamStatus) ->
+        socket.on 'stream-init', (streamStatus) ->
             for key, value of streamStatus
                 model = new Stream
                     name: key
@@ -86,5 +134,27 @@ require [
                     
                 streamCollection.add model
                 view = new StreamView
+                    model: model
+                    
+        socket.on 'server-init', (serverStatus) ->
+            for key, value of serverStatus
+                console.log key
+            
+                model = new Server
+                    name: key
+                    status: value.status
+                    
+                model.on 'change:status', (m) ->
+                    status = m.get 'status'
+                    name = m.get 'name'
+                    
+                    if status
+                        socket.emit 'on', name
+                    else
+                        socket.emit 'off', name
+                        
+                    
+                serverCollection.add model
+                view = new ServerView
                     model: model
                     

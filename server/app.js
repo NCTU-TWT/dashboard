@@ -1,16 +1,23 @@
 var io      = require('./server').io,
     Socket  = require('./socket').Socket,
     V1      = require('./v1').V1,
-    net     = require('net');
+    net     = require('net'),
+    exec    = require('child_process').exec;
+    
+    
 
 io.set('log level', 0);
 
 io.sockets.on('connection', function (socket) {
 
-    socket.emit('init', streamStatus)
+    socket.emit('stream-init', streamStatus);
+    socket.emit('server-init', serverStatus);
 
-    socket.on('start', function (stream) {   
-    
+    //
+    //  Streaming
+    //
+
+    socket.on('start', function (stream) {    
         streamStatus[stream].status = true;
     });
     
@@ -22,7 +29,48 @@ io.sockets.on('connection', function (socket) {
         streamStatus[stream].hiccup = true;
     });
     
+    //
+    //  Server
+    //
+    socket.on('on', function (server) {
+        serverStatus[server].status = true;        
+        exec('forever start ' + serverStatus[server].entry);
+    });
+    socket.on('off', function (server) {
+        serverStatus[server].status = false;
+        exec('forever stop ' + serverStatus[server].entry);
+    });
+    socket.on('restart', function (server) {
+        exec('forever restart ' + serverStatus[server].entry);
+    });
+        
 });
+
+//
+//  Server
+//
+
+
+serverStatus = {
+    'Monitor': {
+        status: false,
+        entry: '~/node/monitor/index.js'
+    },    
+    'Dashboard': {
+        status: false,
+        entry: '~/node/dashboard/server/app.js'
+    }
+};
+
+checkServer = exec('forever list', function (error, stdout, stderr) {
+        
+    raw = stdout.trim().split('\n').splice(2);
+    
+    serverStatus.Monitor.status = /monitor/.test(raw);
+    serverStatus.Dashboard.status = /dashboard/.test(raw);
+    
+})
+
 
 
 
@@ -62,7 +110,7 @@ var v1 = new V1;
 
 var socket = new Socket;
 
-socket.connect(4900, '61.222.87.71');
+socket.connect(4900);
 
 
 

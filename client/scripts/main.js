@@ -14,8 +14,88 @@
   });
 
   require(['jquery', 'io', 'underscore', 'backbone', 'hogan'], function($, io, _, Backbone, hogan, Project) {
-    var Stream, StreamCollection, StreamView, socket;
+    var Server, ServerCollection, ServerView, Stream, StreamCollection, StreamView, socket;
     socket = io.connect();
+    Server = (function(_super) {
+
+      __extends(Server, _super);
+
+      function Server() {
+        Server.__super__.constructor.apply(this, arguments);
+      }
+
+      Server.prototype["default"] = {
+        name: 'anonymous',
+        status: false
+      };
+
+      return Server;
+
+    })(Backbone.Model);
+    ServerCollection = (function(_super) {
+
+      __extends(ServerCollection, _super);
+
+      function ServerCollection() {
+        ServerCollection.__super__.constructor.apply(this, arguments);
+      }
+
+      ServerCollection.prototype.model = Server;
+
+      return ServerCollection;
+
+    })(Backbone.Collection);
+    ServerView = (function(_super) {
+
+      __extends(ServerView, _super);
+
+      function ServerView() {
+        ServerView.__super__.constructor.apply(this, arguments);
+      }
+
+      ServerView.prototype.tagName = 'li';
+
+      ServerView.prototype.template = hogan.compile($('#server-template').html());
+
+      ServerView.prototype.events = {
+        'click .switch': 'switch',
+        'click .restart': 'restart'
+      };
+
+      ServerView.prototype.initialize = function() {
+        return this.render();
+      };
+
+      ServerView.prototype.render = function() {
+        this.$el.html(this.template.render({
+          name: this.model.get('name'),
+          status: this.model.get('status')
+        }));
+        return $('#server').append(this.$el);
+      };
+
+      ServerView.prototype["switch"] = function() {
+        var name, status;
+        status = this.model.get('status');
+        name = this.model.get('name');
+        this.model.set('status', !status);
+        this.$el.html(this.template.render({
+          name: this.model.get('name'),
+          status: this.model.get('status')
+        }));
+        return console.log("" + name + " switched");
+      };
+
+      ServerView.prototype.restart = function() {
+        var name;
+        name = this.model.get('name');
+        socket.emit('restart');
+        return console.log("" + name + " restart");
+      };
+
+      return ServerView;
+
+    })(Backbone.View);
     Stream = (function(_super) {
 
       __extends(Stream, _super);
@@ -100,9 +180,10 @@
 
     })(Backbone.View);
     return $(function() {
-      var streamCollection;
+      var serverCollection, streamCollection;
       streamCollection = new StreamCollection;
-      return socket.on('init', function(streamStatus) {
+      serverCollection = new ServerCollection;
+      socket.on('stream-init', function(streamStatus) {
         var key, model, value, view, _results;
         _results = [];
         for (key in streamStatus) {
@@ -123,6 +204,33 @@
           });
           streamCollection.add(model);
           _results.push(view = new StreamView({
+            model: model
+          }));
+        }
+        return _results;
+      });
+      return socket.on('server-init', function(serverStatus) {
+        var key, model, value, view, _results;
+        _results = [];
+        for (key in serverStatus) {
+          value = serverStatus[key];
+          console.log(key);
+          model = new Server({
+            name: key,
+            status: value.status
+          });
+          model.on('change:status', function(m) {
+            var name, status;
+            status = m.get('status');
+            name = m.get('name');
+            if (status) {
+              return socket.emit('on', name);
+            } else {
+              return socket.emit('off', name);
+            }
+          });
+          serverCollection.add(model);
+          _results.push(view = new ServerView({
             model: model
           }));
         }

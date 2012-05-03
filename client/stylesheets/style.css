@@ -103,23 +103,52 @@ h2 {
   font-size: 200%;
 }
 
-/* line 64, ../../src/sass/style.sass */
+/* line 62, ../../src/sass/style.sass */
+#template {
+  display: none;
+}
+
+/* line 65, ../../src/sass/style.sass */
 #container {
   width: 800px;
   height: 100%;
   margin: 0 auto;
 }
 
-/* line 69, ../../src/sass/style.sass */
+/* line 70, ../../src/sass/style.sass */
 section {
   padding: 40px;
 }
 
-/* line 76, ../../src/sass/style.sass */
+/* line 77, ../../src/sass/style.sass */
+#server {
+  padding: 20px;
+}
+/* line 79, ../../src/sass/style.sass */
+#server li {
+  overflow: hidden;
+  *zoom: 1;
+  height: 40px;
+  line-height: 40px;
+}
+
+/* line 84, ../../src/sass/style.sass */
+.server-name {
+  float: left;
+  width: 200px;
+}
+
+/* line 88, ../../src/sass/style.sass */
+.server-panel {
+  float: left;
+  width: 480px;
+}
+
+/* line 98, ../../src/sass/style.sass */
 #stream {
   padding: 20px;
 }
-/* line 78, ../../src/sass/style.sass */
+/* line 100, ../../src/sass/style.sass */
 #stream li {
   overflow: hidden;
   *zoom: 1;
@@ -127,19 +156,20 @@ section {
   line-height: 40px;
 }
 
-/* line 83, ../../src/sass/style.sass */
+/* line 105, ../../src/sass/style.sass */
 .stream-name {
   float: left;
   width: 200px;
 }
 
-/* line 87, ../../src/sass/style.sass */
+/* line 109, ../../src/sass/style.sass */
 .stream-panel {
   float: left;
   width: 480px;
 }
-/* line 91, ../../src/sass/style.sass */
-.stream-panel button {
+
+/* line 113, ../../src/sass/style.sass */
+button {
   height: 30px;
   line-height: 30px;
   margin: 5px 10px;
@@ -150,21 +180,21 @@ section {
   color: white;
   cursor: pointer;
 }
-/* line 105, ../../src/sass/style.sass */
-.stream-panel button i {
+/* line 127, ../../src/sass/style.sass */
+button i {
   height: 30px;
   line-height: 30px;
   padding-right: 5px;
 }
-/* line 110, ../../src/sass/style.sass */
-.stream-panel button:hover {
+/* line 132, ../../src/sass/style.sass */
+button:hover {
   background: #282828;
 }
-/* line 112, ../../src/sass/style.sass */
-.stream-panel button:active {
+/* line 134, ../../src/sass/style.sass */
+button:active {
   background: #1e1e1e;
 }
-/* line 114, ../../src/sass/style.sass */
-.stream-panel button.selected {
+/* line 136, ../../src/sass/style.sass */
+button.selected {
   background: #3c78b4;
 }

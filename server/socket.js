@@ -11,31 +11,33 @@ Socket.prototype.connect = function (port, host) {
     this.interval = 500;
     this.port = port || 4900;
     this.host = host || 'localhost';
-    this.socket.connect(this.port, this.host);
     
-    this.reconnect = function () {
-        setTimeout(function () {
-            console.log('reconnect in 3 secs');
-            that.socket.connect(port, host);            
-        }, 3000);
+    // create connection    
+    connect = function connect () {    
+        that.socket.connect(that.port, that.host);
+                
+        
+        
     };
     
+    connect();
+        
+    that.socket.on('connect', function () {            
+        
+            console.log('connection to ' + host + ':' + port + ' established'); 
+            
+        }).on('close', function () {
+        
+            console.log('connection closed')
+            setTimeout(connect, 1000);
+            
+        }).on('error', function (err) {
     
-    this.socket.on('connect', function () {    
-        console.log('connection to ' + host + ':' + port + ' established'); 
-    });    
-
-
-    this.socket.on('error', function (err) {
-        console.log(err);
-        that.reconnect();
-    });
-
-    this.socket.on('end', function (err) {
-        console.log('socket end');
-        that.reconnect();
-    });
-
+            if (err.code === 'ECONNREFUSED') {
+                console.log('retry')
+                //setTimeout(connect, 1000);
+            }
+        });
 
 };
 

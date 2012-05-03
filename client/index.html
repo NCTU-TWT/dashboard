@@ -10,6 +10,11 @@
     <body>
         <article id="container">
             <section>
+                <h2>Server Status</h2>
+                <ul id="server">
+                </ul>
+            </section>
+            <section>
                 <h2>Stream Simulation</h2>
                 <ul id="stream">
                 </ul>
@@ -21,6 +26,15 @@
                 <div class="stream-panel">
                     <button class="pipe {{#status}}selected{{/status}}"><i class="icon-random"></i>Pipe</button>
                     <button class="hiccup"><i class="icon-heart"></i>Hiccup</button>
+                </div>
+            </div>
+            <div id="server-template">            
+                <div class="server-name">{{name}}</div>
+                <div class="server-panel">
+                    <button class="switch"><i class="icon-off"></i>{{#status}}Turn Off{{/status}}{{^status}}Turn On{{/status}}</button>                    
+                    {{#status}}
+                        <button class="restart"><i class="icon-repeat"></i>Restart</button>
+                    {{/status}}
                 </div>
             </div>
         </div>
