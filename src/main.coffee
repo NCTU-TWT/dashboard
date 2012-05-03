@@ -59,7 +59,7 @@ require [
             
         restart: ->
             name = @model.get 'name'
-            socket.emit('restart');
+            socket.emit('restart', name);
             console.log "#{name} restart"
             
             

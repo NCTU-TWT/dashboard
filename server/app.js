@@ -40,7 +40,7 @@ io.sockets.on('connection', function (socket) {
         serverStatus[server].status = false;
         exec('forever stop ' + serverStatus[server].entry);
     });
-    socket.on('restart', function (server) {
+    socket.on('restart', function (server) 
         exec('forever restart ' + serverStatus[server].entry);
     });
         

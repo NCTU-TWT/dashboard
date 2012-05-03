@@ -89,7 +89,7 @@
       ServerView.prototype.restart = function() {
         var name;
         name = this.model.get('name');
-        socket.emit('restart');
+        socket.emit('restart', name);
         return console.log("" + name + " restart");
       };
 
